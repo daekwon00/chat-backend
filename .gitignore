@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Docs (학습 기록, git 제외) ###
+docs/
