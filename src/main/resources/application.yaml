@@ -2,14 +2,32 @@ spring:
   application:
     name: chat-backend
 
-  # DB, Redis 등 미설정 상태에서 빌드 성공을 위해 자동 설정 제외
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
-      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+  profiles:
+    default: local    # 프로파일 미지정 시 local 사용
 
-jwt:
-  secret: ThisIsATemporarySecretKeyForDevelopmentMustBeAtLeast32Bytes!
-  access-token-validity: 1800000    # 30분 (밀리초)
-  refresh-token-validity: 604800000 # 7일 (밀리초)
+  jackson:
+    property-naming-strategy: SNAKE_CASE       # JSON 필드명을 snake_case로
+    serialization:
+      write-dates-as-timestamps: false          # 날짜를 ISO-8601 문자열로 (2026-03-23T13:00:00)
+    deserialization:
+      fail-on-unknown-properties: false         # 알 수 없는 JSON 필드 무시
+    time-zone: Asia/Seoul
+
+  jpa:
+    open-in-view: false     # Controller에서 Lazy Loading 차단 (Service 내에서만 DB 접근)
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics    # Actuator 노출 엔드포인트
+  endpoint:
+    health:
+      show-details: always                # health 상세 표시 (DB, Redis 등)

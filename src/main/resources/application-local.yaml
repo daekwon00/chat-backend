@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/chat_solution
+    username: chatuser
+    password: chatpass
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+
+  data:
+    redis:
+      host: localhost
+      port: 6380
+
+  rabbitmq:
+    host: localhost
+    port: 5673
+    username: guest
+    password: guest
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: public
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+jwt:
+  secret: ThisIsATemporarySecretKeyForDevelopmentMustBeAtLeast32Bytes!
+  access-token-validity: 1800000      # 30분
+  refresh-token-validity: 604800000   # 7일
+
+app:
+  aes:
+    key: DevAes256KeyMustBe32Characters!    # AES-256 = 32바이트 키 (개발용)
+
+logging:
+  level:
+    com.chat: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
